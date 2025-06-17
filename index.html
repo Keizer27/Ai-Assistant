@@ -2,81 +2,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Assistant - Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-    body {
-      background: linear-gradient(135deg, #2c3e50, #4ca1af);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
-    .card {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      animation: fadeInUp 0.6s ease-out;
-      width: 100%;
-      max-width: 400px;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      color: #333;
-    }
-    input {
-      width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      background-color: #4ca1af;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background-color: #357f8e;
-    }
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
+  <title>KEIZER AI Assistant</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js"></script>
 </head>
-<body>
-  <div class="card">
-    <h2>Login to AI Assistant</h2>
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <p style="text-align:center;margin-top:1rem;">Don't have an account? <a href="#" onclick="signup()">Sign Up</a></p>
-  </div>  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+<body class="bg-gray-100 text-gray-800">
+  <!-- Login Page -->
+  <div id="login-section" class="flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-4 text-center text-yellow-600">KEIZER LOGIN</h2>
+      <input type="email" id="email" placeholder="Email" class="border rounded w-full p-2 mb-4" />
+      <input type="password" id="password" placeholder="Password" class="border rounded w-full p-2 mb-4" />
+      <button onclick="login()" class="bg-yellow-600 text-white px-4 py-2 rounded w-full">Login</button>
+      <p class="text-center mt-4 text-sm">Don't have an account? <a href="#" onclick="toggleSignup()" class="text-yellow-600">Sign up</a></p>
+      <div id="error-msg" class="text-red-500 text-sm mt-2 text-center"></div>
+    </div>
+  </div>  <!-- Dashboard -->  <div id="dashboard-section" class="hidden h-screen flex flex-col">
+    <header class="bg-white shadow p-4 flex justify-between items-center">
+      <h1 class="text-yellow-600 text-3xl font-bold">KEIZER</h1>
+      <button onclick="logout()" class="text-red-600 font-bold">Logout</button>
+    </header><div class="flex flex-1">
+  <!-- Sidebar -->
+  <nav class="bg-gray-200 w-64 p-4 space-y-4">
+    <h2 class="font-bold text-lg">Tools</h2>
+    <ul class="space-y-2">
+      <li><a href="#" class="block hover:underline">Chat AI</a></li>
+      <li><a href="#" class="block hover:underline">Image Generator</a></li>
+      <li><a href="#" class="block hover:underline">Meme Maker</a></li>
+      <li><a href="#" class="block hover:underline">Voice-to-Text</a></li>
+      <li><a href="#" class="block hover:underline">Quiz Generator</a></li>
+      <li><a href="#" class="block hover:underline">Research Writer</a></li>
+      <li><a href="#" class="block hover:underline">Citation Generator</a></li>
+      <li><a href="#" class="block hover:underline">Journal Writer</a></li>
+    </ul>
+  </nav>
 
+  <!-- Main Content -->
+  <main class="flex-1 p-8">
+    <div class="text-center">
+      <h2 class="text-2xl font-semibold text-gray-700">Welcome, I am <span class="text-yellow-600 font-bold">KEIZER</span>, your AI assistant</h2>
+      <p class="mt-4">How can I help you today?</p>
+      <!-- Placeholder for AI Chat UI -->
+      <div class="mt-6">
+        <textarea class="w-full p-4 rounded border" rows="4" placeholder="Ask me anything..."></textarea>
+        <button class="mt-2 bg-yellow-600 text-white px-6 py-2 rounded">Send</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+  </div>  <script>
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyAUkBHViqyW2E173HJ0NSCrbq4Drw_g5-k",
       authDomain: "ai-assistant-d7b04.firebaseapp.com",
@@ -87,32 +65,44 @@
       measurementId: "G-9B37VLFK5B"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-    window.login = function () {
+    function toggleSignup() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Login successful!");
-          window.location.href = "dashboard.html";
-        })
-        .catch((error) => {
-          alert("Login failed: " + error.message);
-        });
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => login())
+        .catch(err => showError(err.message));
     }
 
-    window.signup = function () {
+    function login() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Signup successful! Now log in.");
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          document.getElementById("login-section").classList.add("hidden");
+          document.getElementById("dashboard-section").classList.remove("hidden");
         })
-        .catch((error) => {
-          alert("Signup failed: " + error.message);
-        });
+        .catch(err => showError(err.message));
     }
+
+    function logout() {
+      auth.signOut().then(() => {
+        document.getElementById("dashboard-section").classList.add("hidden");
+        document.getElementById("login-section").classList.remove("hidden");
+      });
+    }
+
+    function showError(message) {
+      document.getElementById("error-msg").innerText = message;
+    }
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("dashboard-section").classList.remove("hidden");
+      }
+    });
   </script></body>
 </html>
