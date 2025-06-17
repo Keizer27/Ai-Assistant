@@ -1,53 +1,64 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Assistant</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="scripts.js" defer></script>
-  <script>
-    // Add to Home Screen prompt
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const addBtn = document.querySelector('.add-button');
-      addBtn.style.display = 'flex';
-      addBtn.addEventListener('click', () => {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted A2HS prompt');
-          }
-          deferredPrompt = null;
-        });
-      });
-    });
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Assistant - Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #f0f0f5;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      width: 250px;
+      font-size: 16px;
+    }
+    .auth-section {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    #logoutBtn {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>🤖 AI Assistant</h1>
-    <p>Your all-in-one smart assistant for fun and research.</p>
-  </header>
-  <main class="grid">
-    <button onclick="chatAI()">💬 AI Chat</button>
-    <button onclick="generateImage()">🖼️ Image Generator</button>
-    <button onclick="makeMeme()">😂 Meme Maker</button>
-    <button onclick="writePoem()">📝 Poem/Story Writer</button>
-    <button onclick="voiceToText()">🎤 Voice to Text</button>
-    <button onclick="summarizePDF()">📄 PDF Summarizer</button>
-    <button onclick="generateQuiz()">❓ Quiz Generator</button>
-  </main>
-  <footer>
-    <button class="add-button" style="display:none;">Add to Home Screen</button>
-  </footer>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
 
+  <h1>Welcome to AI Assistant</h1>
+
+  <div class="auth-section" id="authForms">
+    <h2>Sign Up</h2>
+    <input type="email" id="signupEmail" placeholder="Email" /><br />
+    <input type="password" id="signupPassword" placeholder="Password" /><br />
+    <button onclick="signUp()">Sign Up</button>
+
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" /><br />
+    <input type="password" id="loginPassword" placeholder="Password" /><br />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div id="userContent" style="display:none;">
+    <h2>You are logged in!</h2>
+    <p>Welcome to your AI tools app.</p>
+    <button id="logoutBtn" onclick="logout()">Logout</button>
+  </div>
+
+  <!-- Firebase JS SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+
+  <script>
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyAUkBHViqyW2E173HJ0NSCrbq4Drw_g5-k",
       authDomain: "ai-assistant-d7b04.firebaseapp.com",
@@ -58,8 +69,56 @@
       measurementId: "G-9B37VLFK5B"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const analytics = firebase.analytics();
+
+    // Signup
+    function signUp() {
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(user => {
+          alert("Signup successful!");
+        })
+        .catch(error => {
+          alert("Signup error: " + error.message);
+        });
+    }
+
+    // Login
+    function login() {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(user => {
+          alert("Login successful!");
+        })
+        .catch(error => {
+          alert("Login error: " + error.message);
+        });
+    }
+
+    // Logout
+    function logout() {
+      auth.signOut().then(() => {
+        alert("Logged out!");
+      });
+    }
+
+    // Check auth state
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById("authForms").style.display = "none";
+        document.getElementById("userContent").style.display = "block";
+        document.getElementById("logoutBtn").style.display = "inline-block";
+      } else {
+        document.getElementById("authForms").style.display = "block";
+        document.getElementById("userContent").style.display = "none";
+        document.getElementById("logoutBtn").style.display = "none";
+      }
+    });
   </script>
 </body>
 </html>
