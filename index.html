@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Tools Assistant</title>
+  <script type="module">
+    // Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAUkBHViqyW2E173HJ0NSCrbq4Drw_g5-k",
+      authDomain: "ai-assistant-d7b04.firebaseapp.com",
+      projectId: "ai-assistant-d7b04",
+      storageBucket: "ai-assistant-d7b04.appspot.com",
+      messagingSenderId: "849656295219",
+      appId: "1:849656295219:web:67eadb61dbca10c9389846",
+      measurementId: "G-9B37VLFK5B"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+</head>
+<body>
+  <h1>Welcome to Your AI Tools Assistant Website</h1>
+  <p>This site is powered by Firebase and ready to include AI tools!</p>
+</body>
+</html>
