@@ -1,0 +1,4 @@
+import { sendEmailVerification } from "firebase/auth";
+
+   // After signup
+   await sendEmailVerification(auth.currentUser);
