@@ -1,13 +1,52 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI Tools Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Assistant</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="scripts.js" defer></script>
+  <script>
+    // Add to Home Screen prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const addBtn = document.querySelector('.add-button');
+      addBtn.style.display = 'flex';
+      addBtn.addEventListener('click', () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted A2HS prompt');
+          }
+          deferredPrompt = null;
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <h1>🤖 AI Assistant</h1>
+    <p>Your all-in-one smart assistant for fun and research.</p>
+  </header>
+  <main class="grid">
+    <button onclick="chatAI()">💬 AI Chat</button>
+    <button onclick="generateImage()">🖼️ Image Generator</button>
+    <button onclick="makeMeme()">😂 Meme Maker</button>
+    <button onclick="writePoem()">📝 Poem/Story Writer</button>
+    <button onclick="voiceToText()">🎤 Voice to Text</button>
+    <button onclick="summarizePDF()">📄 PDF Summarizer</button>
+    <button onclick="generateQuiz()">❓ Quiz Generator</button>
+  </main>
+  <footer>
+    <button class="add-button" style="display:none;">Add to Home Screen</button>
+  </footer>
   <script type="module">
-    // Firebase SDK
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAUkBHViqyW2E173HJ0NSCrbq4Drw_g5-k",
@@ -22,9 +61,5 @@
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
   </script>
-</head>
-<body>
-  <h1>Welcome to Your AI Tools Assistant Website</h1>
-  <p>This site is powered by Firebase and ready to include AI tools!</p>
 </body>
 </html>
