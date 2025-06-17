@@ -1,47 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login | Keizer AI</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Assistant - Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #f0f0f5;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      width: 250px;
+      font-size: 16px;
+    }
+    .auth-section {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    #logoutBtn {
+      display: none;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-blue-900 to-purple-900">
-  <div class="min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden w-full max-w-md animate__animated animate__fadeIn">
-      <div class="p-8">
-        <div class="text-center mb-8">
-          <div class="w-20 h-20 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fas fa-robot text-3xl text-white"></i>
-          </div>
-          <h1 class="text-3xl font-bold text-white">Welcome Back</h1>
-          <p class="text-white/70 mt-2">Access your Keizer AI Assistant</p>
-        </div>
-        
-        <div class="space-y-4">
-          <div>
-            <input type="email" id="email" placeholder="Email" class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <div>
-            <input type="password" id="password" placeholder="Password" class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          <button onclick="login()" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center">
-            <i class="fas fa-sign-in-alt mr-2"></i> Login
-          </button>
-        </div>
-        
-        <div class="mt-6 text-center">
-          <p class="text-white/70">Don't have an account? <a href="#" onclick="toggleSignup()" class="text-white font-medium hover:underline">Sign up</a></p>
-        </div>
-      </div>
-      <div id="error-msg" class="bg-red-500/20 text-white px-4 py-2 text-sm text-center hidden"></div>
-    </div>
+<body>
+
+  <h1>Welcome to AI Assistant</h1>
+
+  <div class="auth-section" id="authForms">
+    <h2>Sign Up</h2>
+    <input type="email" id="signupEmail" placeholder="Email" /><br />
+    <input type="password" id="signupPassword" placeholder="Password" /><br />
+    <button onclick="signUp()">Sign Up</button>
+
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" /><br />
+    <input type="password" id="loginPassword" placeholder="Password" /><br />
+    <button onclick="login()">Login</button>
   </div>
 
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <script src="firebase-config.js"></script>
-  <script src="assets/js/auth.js"></script>
+  <div id="userContent" style="display:none;">
+    <h2>You are logged in!</h2>
+    <p>Welcome to your AI tools app.</p>
+    <button id="logoutBtn" onclick="logout()">Logout</button>
+  </div>
+
+  <!-- Firebase JS SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAUkBHViqyW2E173HJ0NSCrbq4Drw_g5-k",
+      authDomain: "ai-assistant-d7b04.firebaseapp.com",
+      projectId: "ai-assistant-d7b04",
+      storageBucket: "ai-assistant-d7b04.appspot.com",
+      messagingSenderId: "849656295219",
+      appId: "1:849656295219:web:67eadb61dbca10c9389846",
+      measurementId: "G-9B37VLFK5B"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const analytics = firebase.analytics();
+
+    // Signup
+    function signUp() {
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(user => {
+          alert("Signup successful!");
+        })
+        .catch(error => {
+          alert("Signup error: " + error.message);
+        });
+    }
+
+    // Login
+    function login() {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(user => {
+          alert("Login successful!");
+        })
+        .catch(error => {
+          alert("Login error: " + error.message);
+        });
+    }
+
+    // Logout
+    function logout() {
+      auth.signOut().then(() => {
+        alert("Logged out!");
+      });
+    }
+
+    // Check auth state
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById("authForms").style.display = "none";
+        document.getElementById("userContent").style.display = "block";
+        document.getElementById("logoutBtn").style.display = "inline-block";
+      } else {
+        document.getElementById("authForms").style.display = "block";
+        document.getElementById("userContent").style.display = "none";
+        document.getElementById("logoutBtn").style.display = "none";
+      }
+    });
+  </script>
 </body>
 </html>
