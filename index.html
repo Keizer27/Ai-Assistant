@@ -1,64 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Assistant - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
-      background: #f0f0f5;
+      background: linear-gradient(135deg, #2c3e50, #4ca1af);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
     }
-    input, button {
-      padding: 10px;
-      margin: 10px;
-      width: 250px;
-      font-size: 16px;
-    }
-    .auth-section {
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      padding: 20px;
+    .card {
       background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: fadeInUp 0.6s ease-out;
+      width: 100%;
+      max-width: 400px;
     }
-    #logoutBtn {
-      display: none;
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #4ca1af;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #357f8e;
+    }
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
 <body>
-
-  <h1>Welcome to AI Assistant</h1>
-
-  <div class="auth-section" id="authForms">
-    <h2>Sign Up</h2>
-    <input type="email" id="signupEmail" placeholder="Email" /><br />
-    <input type="password" id="signupPassword" placeholder="Password" /><br />
-    <button onclick="signUp()">Sign Up</button>
-
-    <h2>Login</h2>
-    <input type="email" id="loginEmail" placeholder="Email" /><br />
-    <input type="password" id="loginPassword" placeholder="Password" /><br />
+  <div class="card">
+    <h2>Login to AI Assistant</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
     <button onclick="login()">Login</button>
-  </div>
+    <p style="text-align:center;margin-top:1rem;">Don't have an account? <a href="#" onclick="signup()">Sign Up</a></p>
+  </div>  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  <div id="userContent" style="display:none;">
-    <h2>You are logged in!</h2>
-    <p>Welcome to your AI tools app.</p>
-    <button id="logoutBtn" onclick="logout()">Logout</button>
-  </div>
-
-  <!-- Firebase JS SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
-
-  <script>
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyAUkBHViqyW2E173HJ0NSCrbq4Drw_g5-k",
       authDomain: "ai-assistant-d7b04.firebaseapp.com",
@@ -69,56 +87,32 @@
       measurementId: "G-9B37VLFK5B"
     };
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const analytics = firebase.analytics();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-    // Signup
-    function signUp() {
-      const email = document.getElementById("signupEmail").value;
-      const password = document.getElementById("signupPassword").value;
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(user => {
-          alert("Signup successful!");
-        })
-        .catch(error => {
-          alert("Signup error: " + error.message);
-        });
-    }
-
-    // Login
-    function login() {
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
-      auth.signInWithEmailAndPassword(email, password)
-        .then(user => {
+    window.login = function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
           alert("Login successful!");
+          window.location.href = "dashboard.html";
         })
-        .catch(error => {
-          alert("Login error: " + error.message);
+        .catch((error) => {
+          alert("Login failed: " + error.message);
         });
     }
 
-    // Logout
-    function logout() {
-      auth.signOut().then(() => {
-        alert("Logged out!");
-      });
+    window.signup = function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Signup successful! Now log in.");
+        })
+        .catch((error) => {
+          alert("Signup failed: " + error.message);
+        });
     }
-
-    // Check auth state
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        document.getElementById("authForms").style.display = "none";
-        document.getElementById("userContent").style.display = "block";
-        document.getElementById("logoutBtn").style.display = "inline-block";
-      } else {
-        document.getElementById("authForms").style.display = "block";
-        document.getElementById("userContent").style.display = "none";
-        document.getElementById("logoutBtn").style.display = "none";
-      }
-    });
-  </script>
-</body>
+  </script></body>
 </html>
