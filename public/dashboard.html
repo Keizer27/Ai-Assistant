@@ -1,73 +1,572 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Dashboard | Keizer</title>
+  <title>Keizer AI | Your Intelligent Assistant</title>
+  <!-- CSS & Fonts -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/assets/css/animations.css">
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    /* Custom Styles */
+    :root {
+      --color-primary: 59, 130, 246;
+      --color-secondary: 139, 92, 246;
+    }
+    
+    .dark {
+      --color-primary: 99, 102, 241;
+      --color-secondary: 124, 58, 237;
+    }
+
+    /* Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes wave {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(5deg); }
+      75% { transform: rotate(-5deg); }
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-wave {
+      animation: wave 2s ease-in-out infinite;
+    }
+
+    /* UI Components */
+    .btn-primary {
+      background: rgb(var(--color-primary));
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: rgb(var(--color-secondary));
+      transform: translateY(-2px);
+    }
+
+    .tool-card {
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* Dark Mode Scrollbar */
+    .dark ::-webkit-scrollbar-thumb {
+      background-color: rgba(255,255,255,0.2);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans antialiased">
+<body class="bg-gray-50 dark:bg-gray-900 font-sans antialiased">
+  <!-- Dark Mode Toggle -->
+  <button id="darkModeToggle" class="fixed top-4 right-4 z-50 p-3 rounded-full bg-white/80 dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300">
+    <svg id="sunIcon" class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+    </svg>
+    <svg id="moonIcon" class="w-5 h-5 text-blue-400 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+    </svg>
+  </button>
+
   <!-- App Container -->
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-20 md:w-64 bg-gray-900 text-white transition-all duration-300 ease-in-out transform -translate-x-full md:translate-x-0 fixed z-20 h-full">
-      <div class="p-4 border-b border-gray-800 flex items-center justify-between">
-        <span class="text-xl font-bold hidden md:block">AI Tools</span>
+    <aside id="sidebar" class="w-64 bg-gray-800 text-white fixed z-20 h-full transition-all duration-300 ease-in-out transform -translate-x-full md:translate-x-0 shadow-xl">
+      <div class="p-5 border-b border-gray-700 flex items-center justify-between">
+        <h2 class="text-xl font-bold flex items-center">
+          <i class="fas fa-robot mr-2 text-blue-400"></i> AI Tools
+        </h2>
         <button id="close-sidebar" class="md:hidden text-gray-400 hover:text-white">
           <i class="fas fa-times"></i>
         </button>
       </div>
-      <nav class="overflow-y-auto h-[calc(100%-60px)]">
-        <ul class="space-y-1 p-2" id="tool-nav">
-          <!-- Tools injected via JS -->
+      <nav class="overflow-y-auto h-[calc(100%-80px)] p-3">
+        <ul class="space-y-2" id="tool-nav">
+          <!-- Tools injected via JavaScript -->
         </ul>
       </nav>
+      <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700 bg-gray-800/80 backdrop-blur-sm">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
+            <i class="fas fa-user text-white text-sm"></i>
+          </div>
+          <span class="font-medium text-sm">Keizer AI</span>
+        </div>
+      </div>
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col overflow-hidden ml-0 md:ml-20 lg:ml-64 transition-all duration-300">
+    <div class="flex-1 flex flex-col overflow-hidden ml-0 md:ml-64 transition-all duration-300">
       <!-- Header -->
-      <header class="bg-white shadow-sm z-10">
-        <div class="flex items-center justify-between p-4">
-          <button id="menu-toggle" class="text-gray-600 hover:text-blue-600">
+      <header class="bg-white dark:bg-gray-800 shadow-sm z-10">
+        <div class="flex items-center justify-between px-6 py-4">
+          <button id="menu-toggle" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
             <i class="fas fa-bars text-xl"></i>
           </button>
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-5">
             <div class="relative">
-              <div id="voice-indicator" class="w-3 h-3 bg-red-500 rounded-full animate-pulse hidden"></div>
-              <button id="voice-btn" class="p-2 rounded-full bg-gray-200 hover:bg-blue-100 text-blue-600">
+              <div id="voice-indicator" class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse hidden"></div>
+              <button id="voice-btn" class="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-900 text-blue-600 dark:text-blue-400 transition-colors">
                 <i class="fas fa-microphone"></i>
               </button>
             </div>
-            <div class="hidden md:block">
-              <span class="font-medium">Welcome, Keizer</span>
+            <div class="hidden md:flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                <i class="fas fa-user text-white text-sm"></i>
+              </div>
+              <span class="font-medium text-gray-700 dark:text-gray-300 text-sm">Hello, I'm Keizer</span>
             </div>
           </div>
         </div>
       </header>
 
       <!-- Tool Content Area -->
-      <main class="flex-1 overflow-y-auto p-6 bg-gradient-to-br from-gray-50 to-white">
+      <main class="flex-1 overflow-y-auto p-6 bg-gray-100 dark:bg-gray-900/50">
+        <!-- Default Welcome View -->
         <div id="default-view" class="h-full flex flex-col items-center justify-center text-center animate__animated animate__fadeIn">
-          <div id="welcome-animation" class="w-64 h-64 mb-8"></div>
-          <h2 class="text-3xl font-bold text-gray-800 mb-2">Your AI Command Center</h2>
-          <p class="text-gray-600 max-w-md">Select a tool from the sidebar to begin your creative journey</p>
+          <div id="welcome-animation" class="w-72 h-72 mb-8"></div>
+          <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-400 dark:to-purple-500 mb-4">
+            Hello, I'm Keizer
+          </h1>
+          <p class="text-lg text-gray-600 dark:text-gray-400 max-w-md">
+            Your intelligent AI assistant ready to help with research, content creation, and more.
+          </p>
+          <button id="explore-tools" class="mt-8 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+            Explore AI Tools <i class="fas fa-arrow-right ml-2"></i>
+          </button>
         </div>
 
-        <!-- Tool Containers will be injected here -->
-        <div id="tool-container" class="hidden"></div>
+        <!-- Tool Containers -->
+        <div id="tool-container" class="hidden grid grid-cols-1 gap-6">
+          <!-- Tools will be injected here -->
+        </div>
       </main>
     </div>
   </div>
 
   <!-- Overlay -->
-  <div id="overlay" class="fixed inset-0 bg-black/50 z-10 hidden"></div>
+  <div id="overlay" class="fixed inset-0 bg-black/50 z-10 hidden backdrop-blur-sm"></div>
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.1/lottie.min.js"></script>
-  <script src="/assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // ====================
+      // DARK MODE SYSTEM
+      // ====================
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const sunIcon = document.getElementById('sunIcon');
+      const moonIcon = document.getElementById('moonIcon');
+
+      // Initialize dark mode
+      function initDarkMode() {
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+          sunIcon.classList.add('hidden');
+          moonIcon.classList.remove('hidden');
+        } else {
+          document.documentElement.classList.remove('dark');
+          sunIcon.classList.remove('hidden');
+          moonIcon.classList.add('hidden');
+        }
+      }
+
+      // Toggle dark mode
+      darkModeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        sunIcon.classList.toggle('hidden');
+        moonIcon.classList.toggle('hidden');
+      });
+
+      initDarkMode();
+
+      // ====================
+      // SIDEBAR TOGGLE
+      // ====================
+      const menuToggle = document.getElementById('menu-toggle');
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      const closeSidebar = document.getElementById('close-sidebar');
+
+      function toggleSidebar() {
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+        document.body.classList.toggle('overflow-hidden');
+      }
+
+      menuToggle.addEventListener('click', toggleSidebar);
+      closeSidebar.addEventListener('click', toggleSidebar);
+      overlay.addEventListener('click', toggleSidebar);
+
+      // ====================
+      // LOTTIE ANIMATIONS
+      // ====================
+      const welcomeAnim = lottie.loadAnimation({
+        container: document.getElementById('welcome-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets5.lottiefiles.com/packages/lf20_5tkzkblw.json' // AI animation
+      });
+
+      // ====================
+      // TOOL SYSTEM
+      // ====================
+      const tools = [
+        {
+          id: 'research',
+          name: 'Research Assistant',
+          icon: 'search',
+          color: 'text-purple-500',
+          description: 'Find academic sources with proper citations',
+          animation: 'https://assets1.lottiefiles.com/packages/lf20_ndswsq2k.json'
+        },
+        {
+          id: 'voice',
+          name: 'Voice AI',
+          icon: 'microphone',
+          color: 'text-blue-500',
+          description: 'Convert speech to text and analyze voice data',
+          animation: 'https://assets1.lottiefiles.com/packages/lf20_kkflmtur.json'
+        },
+        {
+          id: 'writer',
+          name: 'Content Writer',
+          icon: 'pen-fancy',
+          color: 'text-green-500',
+          description: 'Generate articles, stories, and marketing copy',
+          animation: 'https://assets1.lottiefiles.com/packages/lf20_pmvvrwyr.json'
+        },
+        {
+          id: 'code',
+          name: 'Code Assistant',
+          icon: 'code',
+          color: 'text-yellow-500',
+          description: 'Help with programming and debugging',
+          animation: 'https://assets1.lottiefiles.com/packages/lf20_2znxgjor.json'
+        },
+        {
+          id: 'image',
+          name: 'Image Creator',
+          icon: 'image',
+          color: 'text-pink-500',
+          description: 'Generate AI images from text prompts',
+          animation: 'https://assets1.lottiefiles.com/packages/lf20_isbiybfh.json'
+        },
+        {
+          id: 'translate',
+          name: 'Language Translator',
+          icon: 'language',
+          color: 'text-indigo-500',
+          description: 'Translate between multiple languages',
+          animation: 'https://assets1.lottiefiles.com/packages/lf20_gt2bfr2d.json'
+        },
+        {
+          id: 'summarize',
+          name: 'Text Summarizer',
+          icon: 'file-contract',
+          color: 'text-red-500',
+          description: 'Condense long documents into key points',
+          animation: 'https://assets1.lottiefiles.com/packages/lf20_ocmh9r2x.json'
+        },
+        {
+          id: 'planner',
+          name: 'Study Planner',
+          icon: 'calendar-alt',
+          color: 'text-teal-500',
+          description: 'Create optimized learning schedules',
+          animation: 'https://assets1.lottiefiles.com/packages/lf20_5tl1xxnr.json'
+        },
+        {
+          id: 'quiz',
+          name: 'Quiz Generator',
+          icon: 'question-circle',
+          color: 'text-orange-500',
+          description: 'Create tests and assessments automatically',
+          animation: 'https://assets1.lottiefiles.com/packages/lf20_yjgbp8tb.json'
+        },
+        {
+          id: 'analyze',
+          name: 'Data Analyzer',
+          icon: 'chart-bar',
+          color: 'text-cyan-500',
+          description: 'Process and visualize complex datasets',
+          animation: 'https://assets1.lottiefiles.com/packages/lf20_9efsxf5z.json'
+        }
+      ];
+
+      // Build sidebar navigation
+      const toolNav = document.getElementById('tool-nav');
+      tools.forEach(tool => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <button data-tool="${tool.id}" class="tool-btn w-full flex items-center p-3 rounded-lg hover:bg-gray-700/50 transition-all group">
+            <i class="fas fa-${tool.icon} ${tool.color} text-lg w-8 text-center transition-transform group-hover:scale-125"></i>
+            <span class="ml-3 text-gray-300 group-hover:text-white">${tool.name}</span>
+          </button>
+        `;
+        toolNav.appendChild(li);
+      });
+
+      // Explore Tools Button
+      document.getElementById('explore-tools').addEventListener('click', () => {
+        document.getElementById('default-view').classList.add('hidden');
+        document.getElementById('tool-container').classList.remove('hidden');
+        document.getElementById('tool-container').classList.add('grid');
+      });
+
+      // Tool loading system
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('.tool-btn')) {
+          const toolId = e.target.closest('.tool-btn').dataset.tool;
+          loadTool(toolId);
+          
+          // Close sidebar on mobile
+          if (window.innerWidth < 768) {
+            toggleSidebar();
+          }
+        }
+      });
+
+      function loadTool(toolId) {
+        document.getElementById('default-view').classList.add('hidden');
+        const container = document.getElementById('tool-container');
+        container.innerHTML = getToolUI(toolId);
+        container.classList.remove('hidden');
+        container.classList.add('grid');
+        
+        // Load tool-specific animation
+        const tool = tools.find(t => t.id === toolId);
+        if (tool.animation) {
+          const animContainer = document.createElement('div');
+          animContainer.className = 'w-full h-64 mb-6';
+          document.getElementById(`${toolId}-header`).prepend(animContainer);
+          lottie.loadAnimation({
+            container: animContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: tool.animation
+          });
+        }
+      }
+
+      function getToolUI(toolId) {
+        const tool = tools.find(t => t.id === toolId);
+        const uis = {
+          research: `
+            <div class="animate__animated animate__fadeIn">
+              <div id="research-header" class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white flex items-center">
+                  <i class="fas fa-${tool.icon} ${tool.color} mr-3"></i> ${tool.name}
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400 mt-2">${tool.description}</p>
+              </div>
+              
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 tool-card">
+                  <h3 class="text-lg font-semibold mb-4 dark:text-gray-200">Research Parameters</h3>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Research Topic</label>
+                      <input type="text" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white" placeholder="Enter your research topic">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Reference Style</label>
+                        <select class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                          <option>APA</option>
+                          <option>MLA</option>
+                          <option>Chicago</option>
+                          <option>IEEE</option>
+                        </select>
+                      </div>
+                      
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Source Types</label>
+                        <div class="flex flex-wrap gap-2">
+                          <label class="inline-flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600" checked>
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Journals</span>
+                          </label>
+                          <label class="inline-flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600" checked>
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Books</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <button class="btn-primary px-6 py-3 rounded-lg w-full mt-4">
+                      <i class="fas fa-search mr-2"></i> Find Research Materials
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 tool-card">
+                  <h3 class="text-lg font-semibold mb-4 dark:text-gray-200">Research Results</h3>
+                  <div class="h-96 overflow-y-auto space-y-4">
+                    <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                      <h4 class="font-bold text-gray-800 dark:text-white">Recent Advances in AI Ethics</h4>
+                      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Smith, J. et al. (2023). Journal of AI Research, 12(3), 45-67.</p>
+                      <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm">This paper explores current developments in ethical AI frameworks with focus on practical applications in healthcare.</p>
+                      <button class="text-blue-600 dark:text-blue-400 text-sm mt-2 hover:underline">View Details</button>
+                    </div>
+                    
+                    <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                      <h4 class="font-bold text-gray-800 dark:text-white">Machine Learning for Social Good</h4>
+                      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Johnson, A. (2022). International AI Journal, 8(2), 112-130.</p>
+                      <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm">A comprehensive review of ML applications in nonprofit sectors and community development programs.</p>
+                      <button class="text-blue-600 dark:text-blue-400 text-sm mt-2 hover:underline">View Details</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          voice: `
+            <div class="animate__animated animate__fadeIn">
+              <div id="voice-header" class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white flex items-center">
+                  <i class="fas fa-${tool.icon} ${tool.color} mr-3"></i> ${tool.name}
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400 mt-2">${tool.description}</p>
+              </div>
+              
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 tool-card">
+                  <h3 class="text-lg font-semibold mb-4 dark:text-gray-200">Voice Input</h3>
+                  <div class="flex flex-col items-center">
+                    <button id="start-recording" class="relative p-6 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 hover:shadow-lg transition-all mb-4">
+                      <i class="fas fa-microphone text-3xl"></i>
+                      <div class="voice-wave absolute inset-0 rounded-full border-4 border-blue-400 opacity-0 transition-all"></div>
+                    </button>
+                    <p class="text-gray-600 dark:text-gray-400 text-center">Press and hold to speak. Release to process your voice input.</p>
+                    
+                    <div class="w-full mt-6">
+                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Language</label>
+                      <select class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                        <option>English</option>
+                        <option>Spanish</option>
+                        <option>French</option>
+                        <option>German</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 tool-card">
+                  <h3 class="text-lg font-semibold mb-4 dark:text-gray-200">Voice Output</h3>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Transcript</label>
+                      <div id="transcript-output" class="h-40 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg overflow-y-auto text-gray-800 dark:text-gray-200">
+                        <p class="italic text-gray-500 dark:text-gray-400">Your voice input will appear here...</p>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Voice Analysis</label>
+                      <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                          <p class="text-xs text-gray-500 dark:text-gray-400">Sentiment</p>
+                          <p class="font-medium text-blue-600 dark:text-blue-300">Neutral</p>
+                        </div>
+                        <div class="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg">
+                          <p class="text-xs text-gray-500 dark:text-gray-400">Keywords</p>
+                          <p class="font-medium text-purple-600 dark:text-purple-300">Processing...</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <button class="btn-primary px-6 py-3 rounded-lg w-full mt-2">
+                      <i class="fas fa-language mr-2"></i> Translate Transcript
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `
+          // Other tools would follow similar pattern
+        };
+        
+        return uis[toolId] || `
+          <div class="animate__animated animate__fadeIn">
+            <div id="${toolId}-header" class="mb-8">
+              <h2 class="text-2xl font-bold text-gray-800 dark:text-white flex items-center">
+                <i class="fas fa-${tool.icon} ${tool.color} mr-3"></i> ${tool.name}
+              </h2>
+              <p class="text-gray-600 dark:text-gray-400 mt-2">${tool.description}</p>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8 text-center">
+              <div class="w-40 h-40 mx-auto mb-6 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                <i class="fas fa-${tool.icon} ${tool.color} text-4xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">${tool.name} Tool</h3>
+              <p class="text-gray-600 dark:text-gray-400 mb-6">This powerful tool is coming soon with our next update!</p>
+              <button class="btn-primary px-6 py-2 rounded-lg inline-flex items-center">
+                <i class="fas fa-bell mr-2"></i> Notify Me When Ready
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      // Initialize voice recording
+      function initVoiceTool() {
+        const recordBtn = document.getElementById('start-recording');
+        let isRecording = false;
+        
+        recordBtn.addEventListener('mousedown', startRecording);
+        recordBtn.addEventListener('mouseup', stopRecording);
+        recordBtn.addEventListener('touchstart', startRecording);
+        recordBtn.addEventListener('touchend', stopRecording);
+        
+        function startRecording() {
+          isRecording = true;
+          recordBtn.classList.add('ring-4', 'ring-blue-200');
+          document.querySelector('.voice-wave').classList.remove('opacity-0');
+          document.querySelector('.voice-wave').classList.add('animate-pulse');
+          document.getElementById('transcript-output').innerHTML = '<p class="text-gray-600 dark:text-gray-300">Listening... Speak now</p>';
+        }
+        
+        function stopRecording() {
+          if (!isRecording) return;
+          isRecording = false;
+          recordBtn.classList.remove('ring-4', 'ring-blue-200');
+          document.querySelector('.voice-wave').classList.add('opacity-0');
+          document.querySelector('.voice-wave').classList.remove('animate-pulse');
+          
+          // Simulate processing
+          document.getElementById('transcript-output').innerHTML = '<p class="text-gray-600 dark:text-gray-300">Processing your voice input...</p>';
+          
+          setTimeout(() => {
+            document.getElementById('transcript-output').innerHTML = `
+              <p class="text-gray-800 dark:text-gray-200 mb-2">"Hello Keizer, please help me research the latest developments in neural networks."</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">Confidence: 92% • English</p>
+            `;
+          }, 1500);
+        }
+      }
+
+      // Initialize first tool if coming from explore button
+      if (window.location.hash) {
+        const toolId = window.location.hash.substring(1);
+        if (tools.some(tool => tool.id === toolId)) {
+          loadTool(toolId);
+        }
+      }
+    });
+  </script>
 </body>
 </html>
