@@ -8,11 +8,11 @@ import {
 // Replace with YOUR Firebase config (get from Firebase Console)
 const firebaseConfig = {
   apiKey: "AIzaSyAUkBHViqyW2E173HJ0NSCrbq4Drw_g5-k",
-  authDomain: "your-project-id.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project-id.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdef1234567890abcdef"
+  authDomain: "ai-assistant-d7b04.firebaseapp.com",
+  projectId: "ai-assistant-d7b04",
+  storageBucket: "ai-assistant-d7b04.appspot.com",
+  messagingSenderId: "849656295219",
+  appId:"1:849656295219:web:67eadb61dbca10c9389846"
 };
 
 // Initialize Firebase
