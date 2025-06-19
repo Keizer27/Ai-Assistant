@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keizer AI Assistant - Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+  <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold text-center text-yellow-600 mb-4">I am KEIZER, your AI Assistant</h2>
+    <input type="email" id="email" placeholder="Email" class="w-full p-2 border rounded mb-4">
+    <input type="password" id="password" placeholder="Password" class="w-full p-2 border rounded mb-4">
+    <button id="login-btn" class="w-full bg-yellow-600 text-white py-2 rounded hover:bg-yellow-700">Login</button>
+    <p class="mt-4 text-center text-sm">
+      Don't have an account?
+      <a href="#" id="signup-link" class="text-yellow-600 hover:underline">Sign Up</a>
+    </p>
+    <p id="error-msg" class="text-red-500 text-sm text-center mt-2"></p>
+  </div>
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="assets/js/auth.js"></script>
+</body>
+</html>
