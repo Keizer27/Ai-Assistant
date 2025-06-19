@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keizer AI Dashboard</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="dashboard-body">
+  <div class="sidebar">
+    <h2>⚙️ Keizer</h2>
+    <nav>
+      <ul>
+        <li><button onclick="showTool('chat')">💬 AI Chat</button></li>
+        <li><button onclick="showTool('research')">📚 Research</button></li>
+        <li><button onclick="showTool('writing')">✍️ Writing</button></li>
+        <li><button onclick="showTool('settings')">⚙️ Settings</button></li>
+        <li><button onclick="logout()">🚪 Logout</button></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="main-content">
+    <h1>Welcome to Keizer AI Assistant</h1>
+    <div id="chatTool" class="tool-section">
+      <textarea id="chatInput" placeholder="Ask me anything..."></textarea>
+      <button onclick="sendChat()">Send</button>
+      <div id="chatResponse"></div>
+    </div>
+
+    <div id="researchTool" class="tool-section" style="display:none;">
+      <textarea id="researchInput" placeholder="Enter research topic..."></textarea>
+      <button onclick="startResearch()">Generate Research</button>
+      <div id="researchOutput"></div>
+    </div>
+
+    <div id="writingTool" class="tool-section" style="display:none;">
+      <textarea id="writingInput" placeholder="Enter prompt for writing..."></textarea>
+      <button onclick="generateWriting()">Generate Writing</button>
+      <div id="writingOutput"></div>
+    </div>
+
+    <div id="settingsTool" class="tool-section" style="display:none;">
+      <p>Settings will go here (theme, name, etc).</p>
+    </div>
+  </div>
+
+  <script src="firebase-config.js"></script>
+  <script src="ai-config.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
