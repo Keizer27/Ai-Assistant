@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice AI | Next-Gen Assistant</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-blue-900 overflow-x-hidden">
+  <!-- Animated Background -->
+  <div class="fixed inset-0 z-0 opacity-20">
+    <div id="particles-js"></div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="relative z-10 min-h-screen flex items-center justify-center p-6">
+    <div class="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 p-8 max-w-2xl w-full shadow-2xl animate__animated animate__fadeIn">
+      <div class="flex flex-col md:flex-row gap-8 items-center">
+        <!-- Lottie Animation -->
+        <div id="voice-ai-animation" class="w-full md:w-1/2 h-64"></div>
+        
+        <!-- Text Content -->
+        <div class="w-full md:w-1/2">
+          <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mb-4">
+            Voice AI Foundations
+          </h1>
+          <p class="text-gray-300 mb-6 leading-relaxed">
+            Transform text into intelligent audio with our cutting-edge API. Perfect for Android, web, and enterprise applications.
+          </p>
+          <a href="/dashboard.html" class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full font-medium text-white hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+            Launch Dashboard 
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 animate-pulse" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.1/lottie.min.js"></script>
+  <script src="/assets/js/lottie-loader.js"></script>
+  <script>
+    // Particle.js config
+    particlesJS.load('particles-js', '/assets/particles-config.json');
+  </script>
+</body>
+</html>
