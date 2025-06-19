@@ -7,7 +7,7 @@ import {
 
 // Replace with YOUR Firebase config (get from Firebase Console)
 const firebaseConfig = {
-  apiKey: "AIzaSyABCDEFGHIJKLMNOPQRSTUVWXYZ12345678",
+  apiKey: "AIzaSyAUkBHViqyW2E173HJ0NSCrbq4Drw_g5-k",
   authDomain: "your-project-id.firebaseapp.com",
   projectId: "your-project-id",
   storageBucket: "your-project-id.appspot.com",
