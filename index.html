@@ -6,6 +6,9 @@
   <title>Login | AI Assistant</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+  <!-- Load Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
@@ -28,7 +31,7 @@
         <h2 class="text-2xl font-bold mb-6 text-blue-700 text-center">Welcome Back</h2>
         <input id="login-email" type="email" placeholder="Email" class="border border-gray-300 rounded w-full p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
         <input id="login-password" type="password" placeholder="Password" class="border border-gray-300 rounded w-full p-3 mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-        <button id="login-btn" class="bg-blue-600 text-white rounded w-full py-3 hover:bg-blue-700 transition duration-200">
+        <button id="login-btn" type="button" class="bg-blue-600 text-white rounded w-full py-3 hover:bg-blue-700 transition duration-200">
           Log In
         </button>
         <div id="login-error" class="text-center text-red-500 text-sm mt-2"></div>
@@ -39,7 +42,7 @@
         <h2 class="text-2xl font-bold mb-6 text-blue-700 text-center">Create Your Account</h2>
         <input id="signup-email" type="email" placeholder="Email" class="border border-gray-300 rounded w-full p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
         <input id="signup-password" type="password" placeholder="Password" class="border border-gray-300 rounded w-full p-3 mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-        <button id="signup-btn" class="bg-blue-600 text-white rounded w-full py-3 hover:bg-blue-700 transition duration-200">
+        <button id="signup-btn" type="button" class="bg-blue-600 text-white rounded w-full py-3 hover:bg-blue-700 transition duration-200">
           Sign Up
         </button>
         <div id="signup-error" class="text-center text-red-500 text-sm mt-2"></div>
@@ -59,9 +62,22 @@
   </script>
 
   <!-- Firebase Auth Script -->
-  <script type="module">
-    import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from './firebase-config.js';
+  <script>
+    // Initialize Firebase with your config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Form switching logic
     const loginForm = document.getElementById("login-form");
     const signupForm = document.getElementById("signup-form");
     const loginTab = document.getElementById("show-login");
@@ -81,30 +97,36 @@
       loginTab.classList.remove("text-blue-600", "font-bold", "underline");
     });
 
-    document.getElementById("login-btn").addEventListener("click", async () => {
+    // Login function
+    document.getElementById("login-btn").addEventListener("click", () => {
       const email = document.getElementById("login-email").value;
       const password = document.getElementById("login-password").value;
       const errorDisplay = document.getElementById("login-error");
 
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "dashboard.html";
-      } catch (error) {
-        errorDisplay.textContent = error.message;
-      }
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = "dashboard.html";
+        })
+        .catch(error => {
+          console.error("Login error:", error);
+          errorDisplay.textContent = error.message;
+        });
     });
 
-    document.getElementById("signup-btn").addEventListener("click", async () => {
+    // Signup function
+    document.getElementById("signup-btn").addEventListener("click", () => {
       const email = document.getElementById("signup-email").value;
       const password = document.getElementById("signup-password").value;
       const errorDisplay = document.getElementById("signup-error");
 
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        window.location.href = "dashboard.html";
-      } catch (error) {
-        errorDisplay.textContent = error.message;
-      }
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = "dashboard.html";
+        })
+        .catch(error => {
+          console.error("Signup error:", error);
+          errorDisplay.textContent = error.message;
+        });
     });
   </script>
 </body>
