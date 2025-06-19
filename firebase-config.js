@@ -1,15 +1,22 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword 
+} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 
-export const firebaseConfig = {
-  apiKey: "AIzaSyAUkBHViqyW2E173HJ0NSCrbq4Drw_g5-k",
-  authDomain: "ai-assistant-d7b04.firebaseapp.com",
-  projectId: "ai-assistant-d7b04",
-  storageBucket: "ai-assistant-d7b04.appspot.com",
-  messagingSenderId: "849656295219",
-  appId: "1:849656295219:web:67eadb61dbca10c9389846",
-  measurementId: "G-9B37VLFK5B"
+// Replace with YOUR Firebase config (get from Firebase Console)
+const firebaseConfig = {
+  apiKey: "AIzaSyABCDEFGHIJKLMNOPQRSTUVWXYZ12345678",
+  authDomain: "your-project-id.firebaseapp.com",
+  projectId: "your-project-id",
+  storageBucket: "your-project-id.appspot.com",
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abcdef1234567890abcdef"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+const auth = getAuth(app);
+
+export { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword };
