@@ -1,50 +1,81 @@
-// assets/js/auth.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getAuth, setPersistence, browserLocalPersistence, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-import { firebaseConfig } from "../../firebase-config.js";
+import {
+  auth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "../../firebase-config.js";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+// DOM loaded
+document.addEventListener("DOMContentLoaded", () => {
+  const loginBtn = document.getElementById("login-btn");
+  const signupBtn = document.getElementById("signup-btn");
+  const logoutBtn = document.getElementById("logout-btn");
 
-// SET PERSISTENCE
-setPersistence(auth, browserLocalPersistence).catch((error) => {
-  console.error("Persistence error:", error.message);
+  // Login
+  if (loginBtn) {
+    loginBtn.addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        displayError(error.message);
+      }
+    });
+  }
+
+  // Signup
+  if (signupBtn) {
+    signupBtn.addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        displayError(error.message);
+      }
+    });
+  }
+
+  // Logout
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        window.location.href = "index.html";
+      } catch (error) {
+        console.error("Logout failed:", error);
+      }
+    });
+  }
+
+  // Auth state change handler
+  onAuthStateChanged(auth, (user) => {
+    const isLoginPage = window.location.pathname.includes("index.html");
+    const isDashboard = window.location.pathname.includes("dashboard.html");
+
+    if (user && isLoginPage) {
+      window.location.href = "dashboard.html";
+    }
+
+    if (!user && isDashboard) {
+      window.location.href = "index.html";
+    }
+  });
 });
 
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const loginBtn = document.getElementById("login-btn");
-const signupLink = document.getElementById("signup-link");
-const errorMsg = document.getElementById("error-msg");
-
-// LOGIN FUNCTION
-if (loginBtn) {
-  loginBtn.addEventListener("click", () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        window.location.href = "dashboard.html";
-      })
-      .catch((error) => {
-        errorMsg.textContent = error.message;
-      });
-  });
-}
-
-// SIGNUP LINK - CREATE NEW ACCOUNT
-if (signupLink) {
-  signupLink.addEventListener("click", () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        window.location.href = "dashboard.html";
-      })
-      .catch((error) => {
-        errorMsg.textContent = error.message;
-      });
-  });
+// Display error
+function displayError(msg) {
+  const errorBox = document.getElementById("error-msg");
+  if (errorBox) {
+    errorBox.textContent = msg;
+    errorBox.classList.remove("hidden");
+    setTimeout(() => {
+      errorBox.textContent = "";
+      errorBox.classList.add("hidden");
+    }, 5000);
+  }
 }
