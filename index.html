@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keizer AI Tools Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <h1>Keizer</h1>
+  </nav>
+  <main>
+    <section class="dashboard">
+      <div class="tool-card" data-tool="research">
+        <span>Research/Project Writer</span>
+      </div>
+      <div class="tool-card" data-tool="journal">
+        <span>Journal/Article Writer</span>
+      </div>
+      <div class="tool-card" data-tool="chat">
+        <span>Chat AI</span>
+      </div>
+      <div class="tool-card" data-tool="math">
+        <span>Math Solver</span>
+      </div>
+      <div class="tool-card" data-tool="image">
+        <span>Image Generator</span>
+      </div>
+      <div class="tool-card" data-tool="content">
+        <span>Content Writer</span>
+      </div>
+      <div class="tool-card" data-tool="script">
+        <span>Script Writer</span>
+      </div>
+      <div class="tool-card" data-tool="resume">
+        <span>Resume/CV Writer</span>
+      </div>
+    </section>
+    <!-- Tool Modals (hidden by default) -->
+    <div id="modal-overlay" class="modal-overlay hidden"></div>
+    <div id="chat-modal" class="modal hidden">
+      <div class="modal-header">
+        <h2>Keizer Chat AI</h2>
+        <button id="close-chat" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-content chat-window">
+        <div id="chat-messages" class="chat-messages">
+          <div class="chat-message bot">
+            <span class="typing-indicator"></span>
+          </div>
+        </div>
+        <form id="chat-form" class="chat-form">
+          <input type="text" id="chat-input" autocomplete="off" placeholder="Type your message..." required />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+    <!-- More modals for other tools can be scaffolded here as needed -->
+  </main>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
