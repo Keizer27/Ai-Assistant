@@ -3,61 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Keizer AI Tools Dashboard</title>
+  <title>Keizer - AI Assistant</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <nav class="navbar">
-    <h1>Keizer</h1>
-  </nav>
-  <main>
-    <section class="dashboard">
-      <div class="tool-card" data-tool="research">
-        <span>Research/Project Writer</span>
-      </div>
-      <div class="tool-card" data-tool="journal">
-        <span>Journal/Article Writer</span>
-      </div>
-      <div class="tool-card" data-tool="chat">
-        <span>Chat AI</span>
-      </div>
-      <div class="tool-card" data-tool="math">
-        <span>Math Solver</span>
-      </div>
-      <div class="tool-card" data-tool="image">
-        <span>Image Generator</span>
-      </div>
-      <div class="tool-card" data-tool="content">
-        <span>Content Writer</span>
-      </div>
-      <div class="tool-card" data-tool="script">
-        <span>Script Writer</span>
-      </div>
-      <div class="tool-card" data-tool="resume">
-        <span>Resume/CV Writer</span>
-      </div>
-    </section>
-    <!-- Tool Modals (hidden by default) -->
-    <div id="modal-overlay" class="modal-overlay hidden"></div>
-    <div id="chat-modal" class="modal hidden">
-      <div class="modal-header">
-        <h2>Keizer Chat AI</h2>
-        <button id="close-chat" class="close-btn">&times;</button>
-      </div>
-      <div class="modal-content chat-window">
-        <div id="chat-messages" class="chat-messages">
-          <div class="chat-message bot">
-            <span class="typing-indicator"></span>
-          </div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="keizer-logo">
+          <span class="logo-x">X</span>
         </div>
-        <form id="chat-form" class="chat-form">
+        <span class="keizer-title">Keizer<span class="keizer-dot">.</span></span>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="nav-item active" data-tool="chat"><span>🗨️</span> AI Chat</li>
+          <li class="nav-item" data-tool="report"><span>📄</span> Report Generator</li>
+          <li class="nav-item" data-tool="article"><span>📝</span> Article Writer</li>
+          <li class="nav-item" data-tool="image"><span>🖼️</span> Image Editor</li>
+          <li class="nav-item" data-tool="script"><span>🎬</span> Script Writer</li>
+          <li class="nav-item" data-tool="resume"><span>📋</span> Resume Writer</li>
+          <li class="nav-item" data-tool="content"><span>🧩</span> Content Creation</li>
+          <li class="nav-item" data-tool="math"><span>∑</span> Math Solver</li>
+          <li class="nav-item" data-tool="code"><span>&lt;/&gt;</span> Code Generator</li>
+          <li class="nav-item" data-tool="email"><span>✉️</span> Email Responder</li>
+          <li class="nav-item" data-tool="social"><span>📢</span> Social Media Post</li>
+        </ul>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <!-- Chat AI tool content -->
+      <section class="tool-section" id="chat-section">
+        <div class="chat-header">
+          <span class="logo-x">X</span>
+          <span class="chat-title">Keizer</span>
+        </div>
+        <div class="chat-window" id="chat-window">
+          <div class="chat-messages" id="chat-messages"></div>
+        </div>
+        <form class="chat-form" id="chat-form">
           <input type="text" id="chat-input" autocomplete="off" placeholder="Type your message..." required />
           <button type="submit">Send</button>
         </form>
-      </div>
-    </div>
-    <!-- More modals for other tools can be scaffolded here as needed -->
-  </main>
+      </section>
+      <!-- Placeholder for other tools -->
+      <section class="tool-section hidden" id="report-section"><div class="tool-placeholder">Report Generator coming soon.</div></section>
+      <section class="tool-section hidden" id="article-section"><div class="tool-placeholder">Article Writer coming soon.</div></section>
+      <section class="tool-section hidden" id="image-section"><div class="tool-placeholder">Image Editor coming soon.</div></section>
+      <section class="tool-section hidden" id="script-section"><div class="tool-placeholder">Script Writer coming soon.</div></section>
+      <section class="tool-section hidden" id="resume-section"><div class="tool-placeholder">Resume Writer coming soon.</div></section>
+      <section class="tool-section hidden" id="content-section"><div class="tool-placeholder">Content Creation coming soon.</div></section>
+      <section class="tool-section hidden" id="math-section"><div class="tool-placeholder">Math Solver coming soon.</div></section>
+      <section class="tool-section hidden" id="code-section"><div class="tool-placeholder">Code Generator coming soon.</div></section>
+      <section class="tool-section hidden" id="email-section"><div class="tool-placeholder">Email Responder coming soon.</div></section>
+      <section class="tool-section hidden" id="social-section"><div class="tool-placeholder">Social Media Post coming soon.</div></section>
+    </main>
+  </div>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
