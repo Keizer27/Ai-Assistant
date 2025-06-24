@@ -1,65 +1,104 @@
-<!-- Updated Header -->
-<header>
-  <div class="logo">
-    <span>Keizer</span>
-  </div>
-  <button class="tools-btn" id="toolsBtn">
-    AI Tools <i class="fas fa-chevron-down"></i>
-  </button>
-</header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keizer AI Tools</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-icon"><i class="fas fa-robot"></i></span>
+        <span class="logo-text">Keizer AI</span>
+      </div>
+      <button id="toolsToggle" class="tools-toggle">
+        <i class="fas fa-th"></i> Tools
+      </button>
+    </header>
 
-<!-- Updated Tools Panel -->
-<div class="tools-panel" id="toolsPanel">
-  <div class="tools-header">
-    <h2>Keizer AI Tools</h2>
-    <button class="close-tools" id="closeTools">&times;</button>
-  </div>
-  
-  <div class="tool-category">
-    <h3>Keizer</h3>
-    <div class="tool-item" data-tool="ai-chat">
-      <input type="checkbox" id="ai-chat-checkbox" class="tool-checkbox">
-      <label for="ai-chat-checkbox">AI Chat</label>
-    </div>
-    <div class="tool-item" data-tool="report-generator">
-      <input type="checkbox" id="report-generator-checkbox" class="tool-checkbox">
-      <label for="report-generator-checkbox">Report Generator</label>
-    </div>
-    <div class="tool-item" data-tool="article-writer">
-      <input type="checkbox" id="article-writer-checkbox" class="tool-checkbox">
-      <label for="article-writer-checkbox">Article Writer</label>
-    </div>
-    <div class="tool-item" data-tool="image-editor">
-      <input type="checkbox" id="image-editor-checkbox" class="tool-checkbox">
-      <label for="image-editor-checkbox">Image Editor</label>
-    </div>
-    <div class="tool-item" data-tool="script-writer">
-      <input type="checkbox" id="script-writer-checkbox" class="tool-checkbox">
-      <label for="script-writer-checkbox">Script Writer</label>
-    </div>
-    <div class="tool-item" data-tool="resume-writer">
-      <input type="checkbox" id="resume-writer-checkbox" class="tool-checkbox">
-      <label for="resume-writer-checkbox">Resume Writer</label>
-    </div>
-    <div class="tool-item" data-tool="content-creation">
-      <input type="checkbox" id="content-creation-checkbox" class="tool-checkbox">
-      <label for="content-creation-checkbox">Content Creation</label>
-    </div>
-    <div class="tool-item" data-tool="math-solver">
-      <input type="checkbox" id="math-solver-checkbox" class="tool-checkbox">
-      <label for="math-solver-checkbox">Math Solver</label>
-    </div>
+    <!-- Main Content -->
+    <main class="app-main">
+      <!-- Default Chat View -->
+      <section id="chatView" class="tool-view active">
+        <div class="chat-container">
+          <div id="chatMessages" class="chat-messages"></div>
+          <div class="chat-input-container">
+            <input type="text" id="chatInput" placeholder="Ask me anything..." autocomplete="off">
+            <button id="sendButton" class="send-button">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tool Views Will Be Dynamically Loaded Here -->
+    </main>
+
+    <!-- Tools Panel -->
+    <aside id="toolsPanel" class="tools-panel">
+      <div class="tools-header">
+        <h2>AI Tools</h2>
+        <button id="closeTools" class="close-button">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="tools-categories">
+        <!-- Keizer Tools -->
+        <div class="tool-category">
+          <h3><i class="fas fa-star"></i> Keizer</h3>
+          <div class="tool-list">
+            <button class="tool-item" data-tool="chat">
+              <i class="fas fa-comment-dots"></i> AI Chat
+            </button>
+            <button class="tool-item" data-tool="report">
+              <i class="fas fa-file-alt"></i> Report Generator
+            </button>
+            <button class="tool-item" data-tool="article">
+              <i class="fas fa-newspaper"></i> Article Writer
+            </button>
+            <button class="tool-item" data-tool="image">
+              <i class="fas fa-image"></i> Image Editor
+            </button>
+            <button class="tool-item" data-tool="script">
+              <i class="fas fa-scroll"></i> Script Writer
+            </button>
+            <button class="tool-item" data-tool="resume">
+              <i class="fas fa-file-contract"></i> Resume Writer
+            </button>
+            <button class="tool-item" data-tool="content">
+              <i class="fas fa-pencil-alt"></i> Content Creation
+            </button>
+            <button class="tool-item" data-tool="math">
+              <i class="fas fa-square-root-alt"></i> Math Solver
+            </button>
+          </div>
+        </div>
+
+        <!-- Code Generator -->
+        <div class="tool-category">
+          <h3><i class="fas fa-code"></i> Code Generator</h3>
+          <div class="tool-list">
+            <button class="tool-item" data-tool="email">
+              <i class="fas fa-envelope"></i> Email Responder
+            </button>
+            <button class="tool-item" data-tool="social">
+              <i class="fas fa-share-alt"></i> Social Media
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
   </div>
 
-  <div class="tool-category">
-    <h3>Code Generator</h3>
-    <div class="tool-item" data-tool="email-responder">
-      <input type="checkbox" id="email-responder-checkbox" class="tool-checkbox">
-      <label for="email-responder-checkbox">Email Responder</label>
-    </div>
-    <div class="tool-item" data-tool="social-media">
-      <input type="checkbox" id="social-media-checkbox" class="tool-checkbox">
-      <label for="social-media-checkbox">Social Media Post</label>
-    </div>
-  </div>
-</div>
+  <!-- JavaScript Modules -->
+  <script type="module" src="scripts/main.js"></script>
+</body>
+</html>
