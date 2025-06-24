@@ -1,56 +1,76 @@
 /* Core Variables */
 :root {
-  /* Color Scheme */
-  --primary: #6200ee;
-  --primary-dark: #3700b3;
-  --primary-light: #9e47ff;
-  --secondary: #03dac6;
-  --secondary-dark: #018786;
-  --background: #121212;
-  --surface: #1e1e1e;
-  --error: #cf6679;
-  --warning: #ffa000;
-  --success: #4caf50;
-  
-  /* Typography */
-  --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --font-mono: 'SF Mono', 'Roboto Mono', monospace;
-  --text-base: 1rem;
-  --text-sm: 0.875rem;
+  /* Colors */
+  --primary: #6e48aa;
+  --primary-dark: #4b2d7f;
+  --secondary: #00d4b1;
+  --background: #1a1a2e;
+  --surface: #16213e;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
   
   /* Spacing */
-  --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 1rem;
   --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  
-  /* Transitions */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.5s ease;
   
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.16);
 }
 
-/* Enhanced Tool Panel */
+/* Base Styles */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+#app {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md);
+  background-color: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.logo-icon {
+  color: var(--secondary);
+}
+
+/* Tools Panel */
 .tools-panel {
   position: fixed;
   top: 0;
   right: 0;
-  width: 350px;
+  width: 300px;
   height: 100vh;
-  background: var(--surface);
-  box-shadow: var(--shadow-lg);
+  background-color: var(--surface);
+  box-shadow: var(--shadow-md);
   transform: translateX(100%);
-  transition: transform var(--transition-normal);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-lg);
+  transition: transform 0.3s ease;
+  z-index: 100;
+  padding: var(--space-md);
   overflow-y: auto;
 }
 
@@ -58,105 +78,84 @@
   transform: translateX(0);
 }
 
-/* Tool Items with Hover/Focus States */
+.tool-category {
+  margin-bottom: var(--space-lg);
+}
+
+.tool-list {
+  display: grid;
+  gap: var(--space-sm);
+}
+
 .tool-item {
   display: flex;
   align-items: center;
-  padding: var(--space-md) var(--space-lg);
-  margin: var(--space-xs) 0;
-  border-radius: 8px;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: 6px;
+  background-color: rgba(255,255,255,0.05);
+  border: none;
+  color: var(--text-primary);
   cursor: pointer;
-  transition: 
-    background-color var(--transition-fast),
-    transform var(--transition-fast);
+  transition: all 0.2s ease;
 }
 
 .tool-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255,255,255,0.1);
   transform: translateX(4px);
 }
 
-.tool-item:focus-within {
-  box-shadow: 0 0 0 2px var(--primary-light);
-}
-
-/* Enhanced Checkboxes */
-.tool-checkbox {
+.tool-item i {
   width: 20px;
-  height: 20px;
-  border: 2px solid var(--secondary);
-  border-radius: 4px;
-  margin-right: var(--space-md);
-  position: relative;
-  cursor: pointer;
-  transition: 
-    border-color var(--transition-fast),
-    background-color var(--transition-fast);
+  text-align: center;
 }
 
-.tool-checkbox:checked {
-  background-color: var(--secondary);
-  border-color: var(--secondary);
+/* Tool Views */
+.tool-view {
+  display: none;
+  height: 100%;
+  padding: var(--space-md);
 }
 
-.tool-checkbox:checked::after {
-  content: "";
-  position: absolute;
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 10px;
-  border: solid var(--surface);
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+.tool-view.active {
+  display: block;
 }
+
+/* Chat Interface */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md);
+}
+
+.message {
+  max-width: 80%;
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-sm);
+  border-radius: 18px;
+}
+
+.user-message {
+  align-self: flex-end;
+  background-color: var(--primary);
+}
+
+.ai-message {
+  align-self: flex-start;
+  background-color: var(--surface);
+}
+
+/* Add remaining styles for other tools... */
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .tools-panel {
     width: 100%;
-    padding: var(--space-md);
   }
-  
-  .tool-item {
-    padding: var(--space-sm) var(--space-md);
-  }
-}
-
-/* Animation Keyframes */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-/* Loading States */
-.loading {
-  position: relative;
-  overflow: hidden;
-}
-
-.loading::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  animation: loadingShimmer 1.5s infinite;
-}
-
-@keyframes loadingShimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
 }
