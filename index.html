@@ -1,58 +1,92 @@
-<div class="tools-panel" id="toolsPanel">
-    <div class="tools-header">
-        <h2>Keizer AI Tools</h2>
-        <button class="close-tools" id="closeTools">&times;</button>
-    </div>
-    
-    <div class="tool-category">
-        <h3>Productivity</h3>
-        <div class="tool-item" data-tool="ai-chat">
-            <i class="fas fa-comment-alt"></i>
-            <span>AI Chat</span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keizer AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjxzdHlsZT4udGV4dHtmb250LWZhbWlseTpBcmlhbDtmb250LXdlaWdodDpib2xkO2ZpbGw6IzAzZGFjNjtmb250LXNpemU6MzZweDt9PC9zdHlsZT48dGV4dCBjbGFzcz0idGV4dCIgeD0iMCIgeT0iMzUiPktlaXplcjwvdGV4dD48L3N2Zz4=" alt="Keizer Logo">
+            </div>
+            <button class="tools-btn" id="toolsBtn">AI Tools <i class="fas fa-chevron-down"></i></button>
+        </header>
+
+        <main id="mainContent">
+            <!-- Default Chat Interface -->
+            <div class="chat-container active" id="defaultChat">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Ask me anything...">
+                    <button class="send-btn" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <div class="tools-panel" id="toolsPanel">
+            <div class="tools-header">
+                <h2>Keizer AI Tools</h2>
+                <button class="close-tools" id="closeTools">&times;</button>
+            </div>
+            
+            <div class="tool-category">
+                <h3>Kefzer</h3>
+                <div class="tool-item" data-tool="ai-chat">
+                    <i class="fas fa-comment-alt"></i>
+                    <span>AI Chat</span>
+                </div>
+                <div class="tool-item" data-tool="report-generator">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Report Generator</span>
+                </div>
+                <div class="tool-item" data-tool="article-writer">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Article Writer</span>
+                </div>
+                <div class="tool-item" data-tool="image-editor">
+                    <i class="fas fa-image"></i>
+                    <span>Image Editor</span>
+                </div>
+                <div class="tool-item" data-tool="script-writer">
+                    <i class="fas fa-scroll"></i>
+                    <span>Script Writer</span>
+                </div>
+                <div class="tool-item" data-tool="resume-writer">
+                    <i class="fas fa-file-contract"></i>
+                    <span>Resume Writer</span>
+                </div>
+                <div class="tool-item" data-tool="content-creation">
+                    <i class="fas fa-pencil-alt"></i>
+                    <span>Content Creation</span>
+                </div>
+                <div class="tool-item" data-tool="math-solver">
+                    <i class="fas fa-square-root-alt"></i>
+                    <span>Math Solver</span>
+                </div>
+            </div>
+
+            <div class="tool-category">
+                <h3>Code Generator</h3>
+                <div class="tool-item" data-tool="email-responder">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email Responder</span>
+                </div>
+                <div class="tool-item" data-tool="social-media">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Social Media Post</span>
+                </div>
+            </div>
         </div>
-        <div class="tool-item" data-tool="report-generator">
-            <i class="fas fa-file-alt"></i>
-            <span>Report Generator</span>
-        </div>
-        <div class="tool-item" data-tool="article-writer">
-            <i class="fas fa-newspaper"></i>
-            <span>Article Writer</span>
-        </div>
-        <div class="tool-item" data-tool="script-writer">
-            <i class="fas fa-scroll"></i>
-            <span>Script Writer</span>
-        </div>
-        <div class="tool-item" data-tool="resume-writer">
-            <i class="fas fa-file-contract"></i>
-            <span>Resume Writer</span>
-        </div>
-        <div class="tool-item" data-tool="content-creation">
-            <i class="fas fa-pencil-alt"></i>
-            <span>Content Creation</span>
-        </div>
-        <div class="tool-item" data-tool="math-solver">
-            <i class="fas fa-square-root-alt"></i>
-            <span>Math Solver</span>
-        </div>
+
+        <div class="toast-container" id="toastContainer"></div>
     </div>
 
-    <div class="tool-category">
-        <h3>Code Generator</h3>
-        <div class="tool-item" data-tool="email-responder">
-            <i class="fas fa-envelope"></i>
-            <span>Email Responder</span>
-        </div>
-        <div class="tool-item" data-tool="social-media">
-            <i class="fas fa-share-alt"></i>
-            <span>Social Media Post</span>
-        </div>
-    </div>
-
-    <div class="tool-category">
-        <h3>Creative</h3>
-        <div class="tool-item" data-tool="image-editor">
-            <i class="fas fa-image"></i>
-            <span>Image Editor</span>
-        </div>
-    </div>
-</div>
+    <script src="scripts.js" type="module"></script>
+</body>
+</html>
