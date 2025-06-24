@@ -2,43 +2,35 @@
 const firebaseConfig = {
   // TODO: Paste your firebaseConfig here
 };
-
 firebase.initializeApp(firebaseConfig);
-// If you use Firestore/Auth, you can initialize here as needed
 
-// --- Modal & Dashboard Logic ---
-const overlay = document.getElementById('modal-overlay');
-const chatModal = document.getElementById('chat-modal');
-const chatCloseBtn = document.getElementById('close-chat');
-const toolCards = document.querySelectorAll('.tool-card');
+// --- Sidebar Navigation Logic ---
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('.tool-section');
 
-// Show modal utility
-function showModal(modal) {
-  overlay.classList.remove('hidden');
-  modal.classList.remove('hidden');
+function setActiveNav(tool) {
+  navItems.forEach(item => {
+    if (item.dataset.tool === tool) item.classList.add('active');
+    else item.classList.remove('active');
+  });
 }
 
-// Hide all modals utility
-function hideModals() {
-  overlay.classList.add('hidden');
-  document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
+function showSection(tool) {
+  sections.forEach(section => {
+    if (section.id === `${tool}-section`) section.classList.remove('hidden');
+    else section.classList.add('hidden');
+  });
 }
 
-// Tool card click handlers
-toolCards.forEach(card => {
-  card.addEventListener('click', () => {
-    const tool = card.dataset.tool;
-    if (tool === 'chat') {
-      showModal(chatModal);
-      startChatWelcome();
-    } else {
-      alert('This tool is not implemented in this demo yet, but you can scaffold its modal in the HTML and wire it up in app.js!');
-    }
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const tool = item.dataset.tool;
+    setActiveNav(tool);
+    showSection(tool);
+    // Focus chat input when switching to chat
+    if (tool === 'chat') setTimeout(() => document.getElementById('chat-input').focus(), 300);
   });
 });
-
-overlay.addEventListener('click', hideModals);
-chatCloseBtn.addEventListener('click', hideModals);
 
 // --- Chat AI Logic ---
 const chatMessages = document.getElementById('chat-messages');
@@ -48,7 +40,14 @@ const chatInput = document.getElementById('chat-input');
 function appendMessage(role, text) {
   const msgDiv = document.createElement('div');
   msgDiv.className = `chat-message ${role}`;
+  // Avatar
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar';
+  avatar.textContent = role === 'bot' ? 'X' : 'U';
+  msgDiv.appendChild(avatar);
+  // Bubble
   const span = document.createElement('span');
+  span.className = 'bubble';
   span.textContent = text;
   msgDiv.appendChild(span);
   chatMessages.appendChild(msgDiv);
@@ -57,13 +56,17 @@ function appendMessage(role, text) {
 
 function showTypingIndicator() {
   const typingDiv = document.createElement('div');
-  typingDiv.className = 'chat-message bot';
+  typingDiv.className = 'chat-message bot typing';
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar';
+  avatar.textContent = 'X';
+  typingDiv.appendChild(avatar);
   const typingSpan = document.createElement('span');
+  typingSpan.className = 'bubble';
   typingSpan.innerHTML = `<span class="typing-indicator">
     <span>.</span><span>.</span><span>.</span>
   </span>`;
   typingDiv.appendChild(typingSpan);
-  typingDiv.classList.add('typing');
   chatMessages.appendChild(typingDiv);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
@@ -77,9 +80,11 @@ function removeTypingIndicator() {
 function startChatWelcome() {
   chatMessages.innerHTML = '';
   setTimeout(() => {
-    appendMessage('bot', "I'm Keizer, your AI-assistant.");
+    appendMessage('bot', "Hello! I'm Keizer, your AI assistant. How can I help you today?");
   }, 390);
 }
+
+startChatWelcome();
 
 // Chat form submit
 chatForm.addEventListener('submit', async e => {
@@ -92,7 +97,6 @@ chatForm.addEventListener('submit', async e => {
 
   try {
     // --- Call Firebase Cloud Function as secure AI proxy ---
-    // You must deploy the cloud function below to your Firebase project
     const response = await fetch('/__/functions/aiProxy', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
