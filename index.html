@@ -1,75 +1,68 @@
-                    <li class="nav-item" data-tool="code">
-                        <span class="nav-icon">&lt;/&gt;</span>
-                        <span class="nav-text">Code Generator</span>
-                    </li>
-                    <li class="nav-item" data-tool="email">
-                        <span class="nav-icon">✉️</span>
-                        <span class="nav-text">Email Responder</span>
-                    </li>
-                    <li class="nav-item" data-tool="social">
-                        <span class="nav-icon">📢</span>
-                        <span class="nav-text">Social Media Post</span>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keizer AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjxzdHlsZT4udGV4dHtmb250LWZhbWlseTpBcmlhbDtmb250LXdlaWdodDpib2xkO2ZpbGw6IzAzZGFjNjtmb250LXNpemU6MzZweDt9PC9zdHlsZT48dGV4dCBjbGFzcz0idGV4dCIgeD0iMCIgeT0iMzUiPktlaXplcjwvdGV4dD48L3N2Zz4=" alt="Keizer Logo">
+            </div>
+            <button class="tools-btn" id="toolsBtn">AI Tools <i class="fas fa-chevron-down"></i></button>
+        </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <section class="tool-section" id="chat-section">
-                <div class="chat-header">
-                    <span class="logo-x">X</span>
-                    <span class="chat-title">Keizer</span>
+        <main id="mainContent">
+            <!-- Default Chat Interface -->
+            <div class="chat-container active" id="defaultChat">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Ask me anything...">
+                    <button class="send-btn" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
                 </div>
-                <div class="chat-window" id="chat-window">
-                    <div class="chat-messages" id="chat-messages">
-                        <!-- Messages will be appended here -->
-                    </div>
-                </div>
-                <form class="chat-form" id="chat-form">
-                    <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off" required>
-                    <button type="submit">Send</button>
-                </form>
-            </section>
+            </div>
 
-            <!-- Placeholder sections for other tools -->
-            <section class="tool-section hidden" id="report-section">
-                <div class="tool-placeholder">Report Generator coming soon.</div>
-            </section>
-            <section class="tool-section hidden" id="article-section">
-                <div class="tool-placeholder">Article Writer coming soon.</div>
-            </section>
-            <section class="tool-section hidden" id="image-section">
-                <div class="tool-placeholder">Image Editor coming soon.</div>
-            </section>
-            <section class="tool-section hidden" id="script-section">
-                <div class="tool-placeholder">Script Writer coming soon.</div>
-            </section>
-            <section class="tool-section hidden" id="resume-section">
-                <div class="tool-placeholder">Resume Writer coming soon.</div>
-            </section>
-            <section class="tool-section hidden" id="content-section">
-                <div class="tool-placeholder">Content Creation coming soon.</div>
-            </section>
-            <section class="tool-section hidden" id="math-section">
-                <div class="tool-placeholder">Math Solver coming soon.</div>
-            </section>
-            <section class="tool-section hidden" id="code-section">
-                <div class="tool-placeholder">Code Generator coming soon.</div>
-            </section>
-            <section class="tool-section hidden" id="email-section">
-                <div class="tool-placeholder">Email Responder coming soon.</div>
-            </section>
-            <section class="tool-section hidden" id="social-section">
-                <div class="tool-placeholder">Social Media Post coming soon.</div>
-            </section>
+            <!-- Tool pages will be loaded here dynamically -->
         </main>
+
+        <div class="tools-panel" id="toolsPanel">
+            <div class="tools-header">
+                <h2>Keizer AI Tools</h2>
+                <button class="close-tools" id="closeTools">&times;</button>
+            </div>
+            
+            <div class="tool-category">
+                <h3>Productivity</h3>
+                <div class="tool-item" data-tool="ai-chat">
+                    <i class="fas fa-comment-alt"></i>
+                    <span>AI Chat</span>
+                </div>
+                <div class="tool-item" data-tool="article-writer">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Article Writer</span>
+                </div>
+                <div class="tool-item" data-tool="research-writer">
+                    <i class="fas fa-book"></i>
+                    <span>Research/Project Writer</span>
+                </div>
+            </div>
+
+            <div class="tool-category">
+                <h3>Creative</h3>
+                <div class="tool-item" data-tool="image-editor">
+                    <i class="fas fa-image"></i>
+                    <span>Image Editor</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Firebase Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="app.js"></script>
+    <script src="scripts.js" type="module"></script>
 </body>
 </html>
